@@ -1,0 +1,70 @@
+import React, { useState } from 'react';
+import VideoPlayer from './components/VideoPlayer';
+import EditorTimeline from './components/EditorTimeline';
+import EditorControls from './components/EditorControls';
+import EffectPanel from './components/EffectPanel';
+import { sampleVideos } from './mock/videos';
+import { videoEffects } from './mock/effects';
+
+const App = () => {
+  const [currentVideo, setCurrentVideo] = useState(sampleVideos[0]);
+  const [selectedClipIndex, setSelectedClipIndex] = useState(0);
+  const [showEffectsPanel, setShowEffectsPanel] = useState(false);
+
+  const handleCut = () => {
+    // Lógica para recortar el clip actual
+    alert(`Recortando clip ${selectedClipIndex + 1}`);
+  };
+
+  const handleAddEffect = () => {
+    setShowEffectsPanel(!showEffectsPanel);
+  };
+
+  const handleApplyEffect = (effect) => {
+    alert(`Aplicando efecto: ${effect.name}`);
+    setShowEffectsPanel(false);
+  };
+
+  const handleExport = () => {
+    alert("Exportando video para redes sociales...");
+  };
+
+  const handleSelectClip = (index) => {
+    setSelectedClipIndex(index);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold text-center">ClipCraft</h1>
+        <p className="text-center text-gray-400">Editor de Gameplays para Redes</p>
+      </header>
+
+      <main className="max-w-6xl mx-auto space-y-6">
+        <VideoPlayer videoSrc={currentVideo.src} />
+        
+        <EditorTimeline 
+          clips={currentVideo.clips} 
+          onSelectClip={handleSelectClip} 
+        />
+        
+        <EditorControls 
+          onCut={handleCut}
+          onAddEffect={handleAddEffect}
+          onExport={handleExport}
+        />
+        
+        {showEffectsPanel && (
+          <EffectPanel 
+            effects={videoEffects}
+            onApplyEffect={handleApplyEffect}
+          />
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default App;
+
+// DONE
